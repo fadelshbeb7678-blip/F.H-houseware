@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#183d32">
+  <title>F.H Houseware | أدوات المنزل</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f7f2;
+      color: #24342c;
+    }
+    header {
+      background: #183d32;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    .brand { font-size: 29px; font-weight: bold; letter-spacing: 1px; }
+    header p { margin: 9px 0 0; color: #e0e8df; }
+    .hero {
+      padding: 34px 18px;
+      text-align: center;
+      background: #e8ede4;
+    }
+    .hero h1 { margin: 0 0 12px; font-size: 27px; }
+    .hero p { line-height: 1.8; }
+    .btn {
+      display: inline-block;
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      background: #b88754;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .tools {
+      padding: 18px 14px 4px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d7dcd4;
+      border-radius: 9px;
+      background: white;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      text-align: center;
+      margin: 25px 0 18px;
+    }
+    .products {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 14px 30px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+    .card {
+      background: white;
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 2px 9px #0000000b;
+      border: 1px solid #ecece5;
+    }
+    .product-image {
+      height: 135px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #e9eee6;
+      font-size: 53px;
+    }
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .details { padding: 12px; }
+    .details h3 { margin: 0 0 8px; font-size: 16px; }
+    .details p { color: #70796f; font-size: 13px; min-height: 30px; }
+    .price { color: #1d6448; font-weight: bold; font-size: 19px; }
+    .add {
+      width: 100%;
+      margin-top: 11px;
+      background: #183d32;
+      padding: 11px 5px;
+    }
+    .cart {
+      max-width: 700px;
+      margin: 0 auto 35px;
+      padding: 18px;
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e6e7df;
+    }
+    .cart h2 { margin-top: 0; }
+    .cart-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .cart-row button {
+      border: 0;
+      background: #f4e7df;
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .total { font-size: 21px; font-weight: bold; margin: 18px 0; }
+    .checkout { width: 100%; background: #218c54; }
+    footer {
+      text-align: center;
+      background: #183d32;
+      color: white;
+      padding: 23px 12px;
+      line-height: 1.9;
+    }
+    .empty { color: #777; }
+    @media (min-width: 700px) {
+      .products { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .product-image { height: 190px; }
+      .tools { display: flex; gap: 12px; }
+      .tools input, .tools select { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">F.H Houseware</div>
+  <p>كل ما يحتاجه بيتك، بمكان واحد</p>
+</header>
+
+<section class="hero">
+  <h1>أهلاً وسهلاً في متجرنا 🏡</h1>
+  <p>اكتشفوا تشكيلتنا من أدوات المطبخ والمنزل<br>
+     جودة حلوة وأسعار مناسبة بالدولار.</p>
+  <a class="btn" href="#products">تسوّق الآن</a>
+</section>
+
+<div class="tools">
+  <input id="search" type="search"
+         placeholder="🔎 فتّش عن منتج..."
+         oninput="renderProducts()">
+  <select id="category" onchange="renderProducts()">
+    <option value="الكل">كل الأقسام</option>
+    <option value="المطبخ">أدوات المطبخ</option>
+    <option value="المنزل">أدوات المنزل</option>
+    <option value="التقديم">التقديم والضيافة</option>
+  </select>
+</div>
+
+<h2 class="section-title" id="products">منتجاتنا</h2>
+<div class="products" id="productList"></div>
+
+<section class="cart" id="cart">
+  <h2>🛒 سلة المشتريات</h2>
+  <div id="cartItems"><p class="empty">السلة فارغة حالياً.</p></div>
+  <div class="total">المجموع: $<span id="total">0.00</span></div>
+  <button class="btn checkout" onclick="checkout()">
+    اطلب عبر واتساب
+  </button>
+</section>
+
+<footer>
+  <strong>F.H Houseware</strong><br>
+  شكراً لثقتكم بنا ❤️<br>
+  للطلبات والاستفسارات تواصلوا معنا عبر واتساب.
+</footer>
+
+<script>
+  // ضع رقم واتسابك هنا مع رمز لبنان 961
+  // مثال شكلي فقط: 96170123456
+  // اكتب الرقم من دون + أو مسافات.
+  const WHATSAPP_NUMBER = "961XXXXXXXXX";
+
+  // منتجات تجريبية: عدّل الأسماء والأسعار لاحقاً
+  const products = [
+    {
+      id: 1, name: "طقم أدوات مطبخ",
+      description: "أدوات عملية للاستعمال اليومي",
+      price: 12, category: "المطبخ", emoji: "🍴"
+    },
+    {
+      id: 2, name: "فازة ديكور",
+      description: "لمسة جميلة لديكور المنزل",
+      price: 10, category: "المنزل", emoji: "🏺"
+    },
+    {
+      id: 3, name: "طقم تقديم",
+      description: "للقهوة والضيافة",
+      price: 15, category: "التقديم", emoji: "☕"
+    },
+    {
+      id: 4, name: "علب تخزين",
+      description: "ترتيب وتنظيم المطبخ",
+      price: 8, category: "المطبخ", emoji: "🥣"
+    }
+  ];
+
+  let cart = [];
+
+  function renderProducts() {
+    const search = document.getElementById("search")
+      .value.trim().toLowerCase();
+    const category = document.getElementById("category").value;
+
+    const filtered = products.filter(p =>
+      p.name.toLowerCase().includes(search) &&
+      (category === "الكل" || p.category === category)
+    );
+
+    document.getElementById("productList").innerHTML =
+      filtered.map(p => `
+        <article class="card">
+          <div class="product-image">${p.emoji}</div>
+          <div class="details">
+            <h3>${p.name}</h3>
+            <p>${p.description}</p>
+            <div class="price">$${p.price.toFixed(2)}</div>
+            <button class="btn add" onclick="addToCart(${p.id})">
+              أضف إلى السلة
+            </button>
+          </div>
+        </article>
+      `).join("") || "<p>ما لقينا منتجات مطابقة.</p>";
+  }
+
+  function addToCart(id) {
+    const item = cart.find(p => p.id === id);
+    if (item) {
+      item.qty++;
+    } else {
+      cart.push({ ...products.find(p => p.id === id), qty: 1 });
+    }
+    renderCart();
+  }
+
+  function changeQty(id, amount) {
+    const item = cart.find(p => p.id === id);
+    if (!item) return;
+    item.qty += amount;
+    cart = cart.filter(p => p.qty > 0);
+    renderCart();
+  }
+
+  function renderCart() {
+    const el = document.getElementById("cartItems");
+
+    if (!cart.length) {
+      el.innerHTML = '<p class="empty">السلة فارغة حالياً.</p>';
+    } else {
+      el.innerHTML = cart.map(p => `
+        <div class="cart-row">
+          <span>${p.name}<br>
+          $${p.price.toFixed(2)} × ${p.qty}</span>
+          <span>
+            <button onclick="changeQty(${p.id}, -1)">−</button>
+            <button onclick="changeQty(${p.id}, 1)">+</button>
+          </span>
+        </div>
+      `).join("");
+    }
+
+    const total = cart.reduce((sum, p) =>
+      sum + p.price * p.qty, 0);
+    document.getElementById("total").textContent = total.toFixed(2);
+  }
+
+  function checkout() {
+    if (!cart.length) {
+      alert("أضف منتجاً إلى السلة أولاً.");
+      return;
+    }
+
+    if (!/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
+      alert("قبل استقبال الطلبات، ضع رقم واتسابك الصحيح في الكود.");
+      return;
+    }
+
+    let message = "مرحباً، أريد طلب المنتجات من F.H Houseware:%0A";
+    cart.forEach(p => {
+      message += "%0A" + encodeURIComponent(
+        p.name + " × " + p.qty + " = $" +
+        (p.price * p.qty).toFixed(2)
+      );
+    });
+
+    const total = cart.reduce((sum, p) =>
+      sum + p.price * p.qty, 0);
+
+    message += "%0A" + encodeURIComponent(
+      "المجموع: $" + total.toFixed(2)
+    );
+
+    window.open(
+      "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + message,
+      "_blank"
+    );
+  }
+
+  renderProducts();
+  renderCart();
+</script>
+</body>
+</html>
